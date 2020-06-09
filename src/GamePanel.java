@@ -2,17 +2,21 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements ActionListener, KeyListener{
+public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener{
 	@Override
 	
 	public void paintComponent(Graphics g){
@@ -40,10 +44,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
     public int currentState = MENU;
     public static final Color NIGHT_SKY = new Color(30,10,90);
     public static final Color STAR = new Color(210,250,230);
+    public static final Color GAMEBACKGROUND = new Color(100,100,30);
+    public static final Color PATH = new Color(50,50,10);
     Font titleFont = new Font("Arial", Font.PLAIN,48);
     Font enter_spaceFont = new Font("Arial", Font.PLAIN,24);
-    Tower r = new Tower(225,700,50,50, 0);
-    ObjectManager oj = new ObjectManager(r);
+    ArrayList<Tower> tower = new ArrayList<Tower>();
+    ObjectManager oj = new ObjectManager();
     
     
 	
@@ -53,9 +59,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	void updateGameState() {
 		oj.update();
-		if(r.isActive==false) {
-			currentState = END;
-		}
 	}
 	
 	void updateEndState() {
@@ -77,8 +80,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	
 	void drawGameState(Graphics g) {  
-		loadImage("space.png");
-		g.drawImage(image, 0, 0, TowerDefense.WIDTH, TowerDefense.HEIGHT, null);
+		g.setColor(GAMEBACKGROUND);
+		g.fillRect(0, 0, TowerDefense.WIDTH, TowerDefense.HEIGHT);
+		g.setColor(PATH);
+		g.fillRect(100, 0, 50, 350);
+		g.fillRect(100, 300, 250, 50);
+		g.fillRect(300, 300, 50, 500);
 		oj.draw(g);
 	}
 	
@@ -97,7 +104,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	
 	void startGame() {
-		alienSpawn = new Timer(1000, oj);
+		alienSpawn = new Timer(3000, oj);
 	    alienSpawn.start();
 	}
 	void stopGame() {
@@ -138,9 +145,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
 		    if (currentState == END) {
-		    	r = new Tower(225,700,50,50, 0);
-		    	r.isActive=true;
-			    oj = new ObjectManager(r);
+			    oj = new ObjectManager();
 		        currentState = MENU;
 		    } else if (currentState == MENU) {
 		        currentState = GAME;
@@ -151,31 +156,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		    }
 		}
 		if(currentState == GAME) {
-			if (e.getKeyCode()==KeyEvent.VK_UP) {
-				if(r.y>0) {
-					r.up();
-				}
-			}
-		
-			if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-				if(r.y<725) {
-					r.down();
-				}
-			}	
-		
-			if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-				if(r.x<450) {
-					r.right();
-				}
-			}
-		
-			if (e.getKeyCode()==KeyEvent.VK_LEFT) {
-				if(r.x>0) {
-					r.left();
-				}
-			}
 			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-				oj.addProjectile(r.getProjectile());
+				
 			}
 		}
 		
@@ -183,6 +165,37 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		Projectile p = new Projectile(e.getX(), e.getY(), 30, 30, 0);
+		oj.addTower(e.getX(), e.getY(), p);
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

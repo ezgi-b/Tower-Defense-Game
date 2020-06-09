@@ -3,17 +3,28 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ObjectManager implements ActionListener{
-	Tower rocket;
+import javax.swing.JFrame;
+
+public class ObjectManager extends JFrame implements ActionListener{
+	ArrayList<Tower> towers = new ArrayList<Tower>();
 	int score;
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
-	ObjectManager(Tower s){
-		rocket = s;
+	ObjectManager(){
 		score = 0;
+	}
+	void addTower(int x, int y, Projectile p) {
+		Tower t = new Tower(x, y, 50, 50, 0);
+		t.isActive=false;
+		towers.add(t);
+		projectiles.add(p);
 	}
 	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	
@@ -26,7 +37,8 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	Random r = new Random();
 
 	void addAlien() {
-		aliens.add(new Enemy(r.nextInt(TowerDefense.WIDTH),0,50,50,10));
+		aliens.add(new Enemy(100,30,50,50,10));
+		
 	}
 	
 	void update() {
@@ -50,7 +62,10 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		g.setColor(STAR);
 		g.setFont(font);
 		g.drawString("Score: " + getScore(), 27, 100);
-		rocket.draw(g);
+		for(Tower t: towers) {
+				t.draw(g);
+				
+		}
 		for(Enemy a : aliens) {
 			a.draw(g);
 		}
@@ -61,7 +76,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	
 	void purgeObjects(){
 		for(int i = 0; i<aliens.size();i++) {
-			if(aliens.get(i).isActive==false) {
+			if(aliens.get(i).hp==0) {
 				aliens.remove(i);
 			}
 		}
@@ -75,17 +90,11 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		for(Enemy a: aliens) {
 			for(Projectile p: projectiles) {
 				if(a.collisionBox.intersects(p.collisionBox)) {
-					a.isActive = false;
+					a.hp-=1;
 					p.isActive = false;
 					score++;
 				}
 			}
-		}
-		for(Enemy a: aliens) {
-				if(a.collisionBox.intersects(rocket.collisionBox)) {
-					a.isActive = false;
-					rocket.isActive = false;
-				}
 		}
 	}
 	

@@ -18,17 +18,22 @@ public class Enemy extends GameObject{
 		// TODO Auto-generated constructor stub
 	}
 	void draw(Graphics g){
-		if (gotImage) {
-			g.drawImage(image, x, y, width, height, null);
-		} else {
+		
 			g.drawString("" + hp, x, y);
 			g.setColor(Color.MAGENTA);
 		    g.fillRect(x, y, width, height);
-		}
+
 	}
 	
 	void update(){
-		y+=speed;
+		
+		if(y<300) {
+			y+=speed;
+		}else if(y>300 && x<300) {
+			x+=speed;
+		}else{
+			y+=speed;
+		}
 		super.update();
 	}
 	

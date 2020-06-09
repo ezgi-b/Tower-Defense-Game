@@ -17,5 +17,6 @@ public class TowerDefense {
 		frame.setSize(500, 800);
 		frame.add(game);
 		frame.addKeyListener(game);
+		frame.addMouseListener(game);
 	}
 }
