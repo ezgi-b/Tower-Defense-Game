@@ -18,14 +18,33 @@ public class ObjectManager extends JFrame implements ActionListener{
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
 	ObjectManager(){
-		score = 0;
+		score = 100;
 	}
 	void addTower(int x, int y, Projectile p) {
-		Tower t = new Tower(x, y, 50, 50, 0);
-		t.isActive=false;
-		towers.add(t);
-		projectiles.add(p);
+		if(score>=20) {
+			boolean draw = true;
+			Tower t = new Tower(x, y, 50, 50, 0);
+			t.isActive=false;
+			for(Tower w: towers) {
+				if(t.collisionBox.intersects(w.collisionBox)) {
+					draw = false;
+				}
+			}
+			if(draw==true) {
+				towers.add(t);
+				projectiles.add(p);
+				score-=20;
+			}
+		}
 	}
+	
+	void upgradeTower(int i) {
+		if(score>=40) {
+			towers.get(i-1).upgradeNumber++;
+			score-=40;
+		}
+	}
+	
 	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	
 	void addProjectile(Projectile p) {
@@ -50,7 +69,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		}
 		for(Projectile p: projectiles) {
 			p.update();
-			if(p.y>TowerDefense.HEIGHT) {
+			if(p.y>TowerDefense.HEIGHT || p.x>TowerDefense.WIDTH) {
 				p.isActive=false;
 			}
 		}
@@ -59,9 +78,15 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	}
 	
 	void draw(Graphics g) {
+		for(int i=0; i<towers.size(); i++) {
+			g.setColor(STAR);
+			g.setFont(font);
+			int num = i+1;
+			g.drawString(""+num, towers.get(i).x, towers.get(i).y-10);
+		}
 		g.setColor(STAR);
 		g.setFont(font);
-		g.drawString("Score: " + getScore(), 27, 100);
+		g.drawString("$" + getScore(), 200, 100);
 		for(Tower t: towers) {
 				t.draw(g);
 				
@@ -78,6 +103,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		for(int i = 0; i<aliens.size();i++) {
 			if(aliens.get(i).hp==0) {
 				aliens.remove(i);
+				score+=8;
 			}
 		}
 		for(int i = 0; i<projectiles.size();i++) {
@@ -90,9 +116,8 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		for(Enemy a: aliens) {
 			for(Projectile p: projectiles) {
 				if(a.collisionBox.intersects(p.collisionBox)) {
-					a.hp-=1;
+					a.hp-=2;
 					p.isActive = false;
-					score++;
 				}
 			}
 		}
@@ -107,5 +132,13 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		addAlien();
+		for(Tower t: towers) {
+			Projectile p = new Projectile(t.x, t.y, 30, 30, 0);
+			addProjectile(p);
+			if(t.upgradeNumber==1) {
+				Projectile z = new Projectile(t.x-10, t.y, 30, 30, 0);
+				addProjectile(z);
+			}
+		}
 	}
 }

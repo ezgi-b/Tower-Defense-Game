@@ -18,10 +18,14 @@ public class Enemy extends GameObject{
 		// TODO Auto-generated constructor stub
 	}
 	void draw(Graphics g){
-		
-			g.drawString("" + hp, x, y);
-			g.setColor(Color.MAGENTA);
-		    g.fillRect(x, y, width, height);
+		g.setColor(Color.WHITE);
+		g.drawString("" + hp, x, y-20);
+		g.setColor(Color.MAGENTA);
+		g.fillRect(x, y, width, height);
+		g.setColor(Color.GREEN);
+		g.fillRect(x, y-15, hp*5, 10);
+		g.setColor(Color.RED);
+		g.fillRect(x+(hp*5), y-15, 50-(hp*5), 10);
 
 	}
 	

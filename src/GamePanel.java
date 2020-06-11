@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -161,6 +162,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			}
 		}
 		
+		if (e.getKeyCode()==KeyEvent.VK_U) {
+			System.out.println("ooo");
+			oj.upgradeTower(Integer.parseInt(JOptionPane.showInputDialog("Which number Tower do you want to updgrage")));
+		}
 	}
 
 	@Override
