@@ -31,11 +31,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 	
 	public static Image image;
-	
 	Timer frameDraw;
 	Timer alienSpawn;
 	GamePanel(){
-		frameDraw = new Timer(1000/60,this);
+		frameDraw = new Timer(1000/40,this);
 		frameDraw.start();
 	}
 	
@@ -105,7 +104,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 	
 	void startGame() {
-		alienSpawn = new Timer(3000, oj);
+		alienSpawn = new Timer(4000, oj);
 	    alienSpawn.start();
 	}
 	void stopGame() {
@@ -164,7 +163,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		
 		if (e.getKeyCode()==KeyEvent.VK_U) {
 			System.out.println("ooo");
-			oj.upgradeTower(Integer.parseInt(JOptionPane.showInputDialog("Which number Tower do you want to updgrage")));
+			oj.upgradeTower(Integer.parseInt(JOptionPane.showInputDialog("Which number Tower do you want to updgrade")));
 		}
 	}
 
@@ -177,8 +176,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		Projectile p = new Projectile(e.getX(), e.getY(), 30, 30, 0);
-		oj.addTower(e.getX(), e.getY(), p);
+	
+		oj.addTower(e.getX()-25, e.getY()-50, Integer.parseInt(JOptionPane.showInputDialog("What direction do you want the shooter to shoot?")));
 	}
 
 	@Override

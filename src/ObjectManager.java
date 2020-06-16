@@ -11,19 +11,23 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 public class ObjectManager extends JFrame implements ActionListener{
 	ArrayList<Tower> towers = new ArrayList<Tower>();
 	int score;
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
+	Timer shoot = new Timer(2050, this);
 	ObjectManager(){
 		score = 100;
+		shoot.start();
 	}
-	void addTower(int x, int y, Projectile p) {
+	void addTower(int x, int y, int d) {
 		if(score>=20) {
 			boolean draw = true;
 			Tower t = new Tower(x, y, 50, 50, 0);
+			t.direction = d;
 			t.isActive=false;
 			for(Tower w: towers) {
 				if(t.collisionBox.intersects(w.collisionBox)) {
@@ -32,7 +36,6 @@ public class ObjectManager extends JFrame implements ActionListener{
 			}
 			if(draw==true) {
 				towers.add(t);
-				projectiles.add(p);
 				score-=20;
 			}
 		}
@@ -40,8 +43,10 @@ public class ObjectManager extends JFrame implements ActionListener{
 	
 	void upgradeTower(int i) {
 		if(score>=40) {
+			if(towers.get(i-1).upgradeNumber<2) {
 			towers.get(i-1).upgradeNumber++;
 			score-=40;
+			}
 		}
 	}
 	
@@ -56,8 +61,8 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	Random r = new Random();
 
 	void addAlien() {
-		aliens.add(new Enemy(100,30,50,50,10));
-		
+		Enemy e = new Enemy(100,30,50,50,10);
+		aliens.add(e);
 	}
 	
 	void update() {
@@ -101,7 +106,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	
 	void purgeObjects(){
 		for(int i = 0; i<aliens.size();i++) {
-			if(aliens.get(i).hp==0) {
+			if(aliens.get(i).hp<=0) {
 				aliens.remove(i);
 				score+=8;
 			}
@@ -116,7 +121,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		for(Enemy a: aliens) {
 			for(Projectile p: projectiles) {
 				if(a.collisionBox.intersects(p.collisionBox)) {
-					a.hp-=2;
+					a.hp-=(2*(p.upgrade+1));
 					p.isActive = false;
 				}
 			}
@@ -131,14 +136,16 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		addAlien();
-		for(Tower t: towers) {
-			Projectile p = new Projectile(t.x, t.y, 30, 30, 0);
-			addProjectile(p);
-			if(t.upgradeNumber==1) {
-				Projectile z = new Projectile(t.x-10, t.y, 30, 30, 0);
-				addProjectile(z);
+		
+		if(e.getSource().equals(shoot)) {
+			for(Tower t: towers) {
+				Projectile p = new Projectile(t.x+10, t.y+10, 30, 30, 0);
+				p.upgrade=t.upgradeNumber;
+				p.direction=t.direction;
+				addProjectile(p);
 			}
+		}else {
+			addAlien();
 		}
 	}
 }

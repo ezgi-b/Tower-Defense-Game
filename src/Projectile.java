@@ -8,7 +8,8 @@ public class Projectile extends  GameObject{
 	public static BufferedImage image;
 	public static boolean needImage = true;
 	public static boolean gotImage = false;	
-	
+	int upgrade;
+	int direction = 2;
 	Projectile(int x, int y, int width, int height, int hp) {
 		super(x, y, width, height, hp);
 		// TODO Auto-generated constructor stub
@@ -27,8 +28,19 @@ public class Projectile extends  GameObject{
 	}
 	
 	void update(){
-		x+=speed;
-		super.update();
+		if(direction==1) {
+			y-=speed;
+			super.update();
+		}else if(direction==2) {
+			x+=speed;
+			super.update();
+		}else if(direction==3) {
+			y+=speed;
+			super.update();
+		}else if(direction==4) {
+			x-=speed;
+			super.update();
+		}
 	}
 	void loadImage(String imageFile) {
 	    if (needImage) {

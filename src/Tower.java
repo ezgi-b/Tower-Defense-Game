@@ -10,17 +10,12 @@ public class Tower extends GameObject{
 		speed = 15;
 	}
 	int upgradeNumber=0;
-	
+	int direction = 1;
 	void draw(Graphics g) {
 		if(isActive==false) {
-			if(upgradeNumber==0) {
-				g.setColor(Color.CYAN);
+			Color z = new Color(180-(upgradeNumber*40), 180-(upgradeNumber*40), 255);
+				g.setColor(z);
 				g.fillRect(x, y, width, height);
-			}
-			if(upgradeNumber==1) {
-				g.setColor(Color.BLUE);
-				g.fillRect(x, y, width, height);
-			}
 		}
 	}	
 	public void right() {
