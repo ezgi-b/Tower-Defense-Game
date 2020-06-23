@@ -19,6 +19,8 @@ public class ObjectManager extends JFrame implements ActionListener{
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
 	Timer shoot = new Timer(2050, this);
+	Timer anim = new Timer(250, this);
+	Treasure_Chest tc = new Treasure_Chest(275, 700, 100, 100, 20);
 	ObjectManager(){
 		score = 100;
 		shoot.start();
@@ -102,6 +104,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		for(Projectile p: projectiles) {
 			p.draw(g);
 		}
+		tc.draw(g);
 	}
 	
 	void purgeObjects(){
@@ -139,11 +142,18 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		
 		if(e.getSource().equals(shoot)) {
 			for(Tower t: towers) {
-				Projectile p = new Projectile(t.x+10, t.y+10, 30, 30, 0);
+				Projectile p = new Projectile(t.x+15, t.y+15, 20, 20, 0);
 				p.upgrade=t.upgradeNumber;
 				p.direction=t.direction;
 				addProjectile(p);
+				t.shootAnim=true;
+				anim.start();
 			}
+		}else if(e.getSource().equals(anim)){
+			for(Tower t: towers) {
+				t.shootAnim=false;
+			}
+			anim.stop();
 		}else {
 			addAlien();
 		}

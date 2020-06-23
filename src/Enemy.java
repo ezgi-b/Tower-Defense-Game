@@ -12,9 +12,6 @@ public class Enemy extends GameObject{
 	Enemy(int x, int y, int width, int height, int hp) {
 		super(x, y, width, height, hp);
 		speed = 1;
-		if (needImage) {
-		    loadImage ("alien.png");
-		}
 		// TODO Auto-generated constructor stub
 	}
 	void draw(Graphics g){

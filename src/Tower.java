@@ -9,14 +9,53 @@ public class Tower extends GameObject{
 		super(x,y,width,height, hp);
 		speed = 15;
 	}
+	boolean shootAnim;
 	int upgradeNumber=0;
 	int direction = 1;
 	void draw(Graphics g) {
-		if(isActive==false) {
-			Color z = new Color(180-(upgradeNumber*40), 180-(upgradeNumber*40), 255);
+			Color z = new Color(140, 140,255);
+			Color r = new Color(170,10,190);
+			Color p = new Color(100,30,150);
 				g.setColor(z);
 				g.fillRect(x, y, width, height);
-		}
+				g.setColor(r);
+				for(int i = 0; i<upgradeNumber; i++) {
+					if(direction==1) {
+						g.fillRect(x, y+((i+1)*15), 50, 10);
+					}else if(direction==2) {
+						g.fillRect(x+40-((i+1)*15), y, 10, 50);
+					}else if(direction==3) {
+						g.fillRect(x, y+40-((i+1)*15), 50, 10);
+					}else if(direction==4) {
+						g.fillRect(x+((i+1)*15), y, 10, 50);
+					}
+				}
+				g.setColor(p);
+				if(direction==1) {
+					if(shootAnim==true) {
+						g.fillRect(x+12, y+25, 26, 25);
+					}else {
+						g.fillRect(x+10, y+25, 30, 25);
+					}
+				}else if(direction==2) {
+					if(shootAnim==true) {
+						g.fillRect(x, y+12, 25, 26);
+					}else {
+						g.fillRect(x, y+10, 25, 30);
+					}
+				}else if(direction==3) {
+					if(shootAnim==true) {
+						g.fillRect(x+12, y, 26, 25);
+					}else {
+						g.fillRect(x+10, y, 30, 25);
+					}
+				}else if(direction==4) {
+					if(shootAnim==true) {
+						g.fillRect(x+25, y+12, 25, 26);
+					}else {
+						g.fillRect(x+25, y+10, 25, 30);
+					}
+				}
 	}	
 	public void right() {
 		
