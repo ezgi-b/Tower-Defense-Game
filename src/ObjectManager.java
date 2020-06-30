@@ -63,7 +63,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	Random r = new Random();
 
 	void addAlien() {
-		Enemy e = new Enemy(100,30,50,50,10);
+		Enemy e = new Enemy(100,-50,50,50,10);
 		aliens.add(e);
 	}
 	
@@ -119,6 +119,11 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 				projectiles.remove(i);
 			}
 		}
+		for(int i = 0; i<aliens.size();i++) {
+			if(aliens.get(i).isActive==false) {
+				aliens.remove(i);
+			}
+		}
 	}
 	void checkCollision() {
 		for(Enemy a: aliens) {
@@ -127,6 +132,12 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 					a.hp-=(2*(p.upgrade+1));
 					p.isActive = false;
 				}
+			}
+		}
+		for(Enemy a: aliens) {
+			if(a.collisionBox.intersects(tc.collisionBox)) {
+				tc.hp--;
+				a.isActive=false;
 			}
 		}
 	}
