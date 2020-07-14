@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	Timer frameDraw;
 	Timer alienSpawn;
 	GamePanel(){
-		frameDraw = new Timer(1000/40,this);
+		frameDraw = new Timer(1000/70,this);
 		frameDraw.start();
 	}
 	

@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -27,20 +28,42 @@ public class Projectile extends  GameObject{
 		}
 	}
 	
-	void update(){
-		if(direction==1) {
-			y-=speed;
-			super.update();
-		}else if(direction==2) {
-			x+=speed;
-			super.update();
-		}else if(direction==3) {
-			y+=speed;
-			super.update();
-		}else if(direction==4) {
-			x-=speed;
+	void update(ArrayList<Enemy> enemies){
+		//if(direction==1) {
+			//y-=speed;
+			//super.update();
+		//}else if(direction==2) {
+			//x+=speed;
+			//super.update();
+		//}else if(direction==3) {
+			//y+=speed;
+			//super.update();
+		//}else if(direction==4) {
+			//x-=speed;
+			//super.update();
+		//}
+		if(enemies.isEmpty()) {
+			
+		}else{
+			int xgo;
+			int ygo;
+			xgo = enemies.get(0).x-x;
+			ygo = enemies.get(0).y-y;
+			if(xgo<0) {
+				x-=2;
+			}
+			if(xgo>0) {
+				x+=2;
+			}
+			if(ygo<0) {
+				y-=2;
+			}
+			if(ygo>0) {
+				y+=2;
+			}
 			super.update();
 		}
+		
 	}
 	void loadImage(String imageFile) {
 	    if (needImage) {

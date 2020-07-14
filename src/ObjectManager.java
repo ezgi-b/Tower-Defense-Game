@@ -18,7 +18,7 @@ public class ObjectManager extends JFrame implements ActionListener{
 	int score;
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
-	Timer shoot = new Timer(2050, this);
+	Timer shoot = new Timer(4053, this);
 	Timer anim = new Timer(250, this);
 	Treasure_Chest tc = new Treasure_Chest(275, 700, 100, 100, 20);
 	ObjectManager(){
@@ -75,7 +75,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 			}
 		}
 		for(Projectile p: projectiles) {
-			p.update();
+			p.update(aliens);
 			if(p.y>TowerDefense.HEIGHT || p.x>TowerDefense.WIDTH) {
 				p.isActive=false;
 			}

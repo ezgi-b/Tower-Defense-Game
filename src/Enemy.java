@@ -1,22 +1,20 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
 
 public class Enemy extends GameObject{
-	public static BufferedImage image;
-	public static boolean needImage = true;
-	public static boolean gotImage = false;	
 	
 	Enemy(int x, int y, int width, int height, int hp) {
 		super(x, y, width, height, hp);
 		speed = 1;
 		// TODO Auto-generated constructor stub
 	}
+	int type = 0;
+	Font font = new Font("Arial", Font.BOLD,28);
 	void draw(Graphics g){
 		g.setColor(Color.WHITE);
-		g.drawString("" + hp, x, y-20);
+		g.setFont(font);
+		g.drawString("" + hp, x+10, y-20);
 		g.setColor(Color.MAGENTA);
 		g.fillRect(x, y, width, height);
 		g.setColor(Color.GREEN);
@@ -36,18 +34,6 @@ public class Enemy extends GameObject{
 			y+=speed;
 		}
 		super.update();
-	}
-	
-	void loadImage(String imageFile) {
-	    if (needImage) {
-	        try {
-	            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
-		    gotImage = true;
-	        } catch (Exception e) {
-	            
-	        }
-	        needImage = false;
-	    }
 	}
 
 }
