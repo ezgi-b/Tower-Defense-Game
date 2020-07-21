@@ -11,6 +11,7 @@ public class Projectile extends  GameObject{
 	public static boolean gotImage = false;	
 	int upgrade;
 	int direction = 2;
+	int circle = 0;
 	Projectile(int x, int y, int width, int height, int hp) {
 		super(x, y, width, height, hp);
 		// TODO Auto-generated constructor stub
@@ -24,7 +25,8 @@ public class Projectile extends  GameObject{
 			g.drawImage(image, x, y, width, height, null);
 		} else {
 			g.setColor(Color.PINK);
-			g.fillRect(x, y, width, height);
+			g.fillOval(x, y, width, height);
+			//g.fillRect(x, y, width, height);
 		}
 	}
 	
@@ -43,23 +45,63 @@ public class Projectile extends  GameObject{
 			//super.update();
 		//}
 		if(enemies.isEmpty()) {
+			if(circle%4==0) {
+				x+=4;
+			}else if(circle%4==1) {
+				y+=4;
+			}else if(circle%4==2) {
+				x-=4;
+			}else if(circle%4==3) {
+				y-=4;
+			}
+			circle++;
+			
+			
 			
 		}else{
-			int xgo;
-			int ygo;
+			float xgo;
+			float ygo;
+			float xplus = 0;
+			float yplus = 0;
 			xgo = enemies.get(0).x-x;
 			ygo = enemies.get(0).y-y;
+			
+			float slope = Math.abs(ygo/xgo);
+			if(slope>1000) {
+				yplus = (float) 2.44948974278;
+				System.out.println("ddd");
+			}else {
+				while(6>=((xplus*xplus)+(yplus)*(yplus))) {
+					xplus+=0.005;
+					yplus = xplus*slope;
+				}
+			}
+			
+			
+			//if(xgo<0) {
+				//x-=2;
+			//}
+			//if(xgo>0) {
+				//x+=2;
+			//}
+			//if(ygo<0) {
+				//y-=2;
+			//}
+			//if(ygo>0) {
+				//y+=2;
+			//}
+			
 			if(xgo<0) {
-				x-=2;
+				x-=xplus;
 			}
 			if(xgo>0) {
-				x+=2;
+				x+=xplus;
 			}
 			if(ygo<0) {
-				y-=2;
+				y-=yplus;
 			}
 			if(ygo>0) {
-				y+=2;
+				y+=yplus;
 			}
 			super.update();
 		}
