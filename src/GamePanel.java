@@ -177,7 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 	
-		oj.addTower(e.getX()-25, e.getY()-50, Integer.parseInt(JOptionPane.showInputDialog("What direction do you want the shooter to shoot?")));
+		oj.addTower(e.getX()-25, e.getY()-50/*, Integer.parseInt(JOptionPane.showInputDialog("What direction do you want the shooter to shoot?"))*/);
 	}
 
 	@Override

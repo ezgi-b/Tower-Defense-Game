@@ -45,14 +45,26 @@ public class Projectile extends  GameObject{
 			//super.update();
 		//}
 		if(enemies.isEmpty()) {
-			if(circle%4==0) {
+			if(circle%8==0) {
 				x+=4;
-			}else if(circle%4==1) {
+			}else if(circle%8==1) {
+				x+=3;
+				y+=3;
+			}else if(circle%8==2) {
 				y+=4;
-			}else if(circle%4==2) {
+			}else if(circle%8==3) {
+				y+=3;
+				x-=3;
+			}else if(circle%8==4) {
 				x-=4;
-			}else if(circle%4==3) {
+			}else if(circle%8==5) {
+				y-=3;
+				x-=3;
+			}else if(circle%8==6) {
 				y-=4;
+			}else if(circle%8==7) {
+				y-=3;
+				x+=3;
 			}
 			circle++;
 			

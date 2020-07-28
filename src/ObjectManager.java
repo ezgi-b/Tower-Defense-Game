@@ -19,17 +19,19 @@ public class ObjectManager extends JFrame implements ActionListener{
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
 	Timer shoot = new Timer(4053, this);
+	Timer faster = new Timer(20000, this);
 	Timer anim = new Timer(250, this);
+	Timer spawn2 = new Timer(4053, this);
 	Treasure_Chest tc = new Treasure_Chest(275, 700, 100, 100, 20);
 	ObjectManager(){
 		score = 100;
 		shoot.start();
+		faster.start();
 	}
-	void addTower(int x, int y, int d) {
+	void addTower(int x, int y) {
 		if(score>=20) {
 			boolean draw = true;
 			Tower t = new Tower(x, y, 50, 50, 0);
-			t.direction = d;
 			t.isActive=false;
 			for(Tower w: towers) {
 				if(t.collisionBox.intersects(w.collisionBox)) {
@@ -155,7 +157,6 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 			for(Tower t: towers) {
 				Projectile p = new Projectile(t.x+15, t.y+15, 20, 20, 0);
 				p.upgrade=t.upgradeNumber;
-				p.direction=t.direction;
 				addProjectile(p);
 				t.shootAnim=true;
 				anim.start();
@@ -165,6 +166,11 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 				t.shootAnim=false;
 			}
 			anim.stop();
+		}else if(e.getSource().equals(faster)){
+			faster.stop();
+			spawn2.start();
+		}else if(e.getSource().equals(spawn2)){
+			addAlien();
 		}else {
 			addAlien();
 		}
