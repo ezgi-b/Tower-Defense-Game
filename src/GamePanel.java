@@ -176,8 +176,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-	
-		oj.addTower(e.getX()-25, e.getY()-50/*, Integer.parseInt(JOptionPane.showInputDialog("What direction do you want the shooter to shoot?"))*/);
+		String input = JOptionPane.showInputDialog("What type of tower do you want to buy? (freezy or shooty)");
+		if(input.equals("freezy")||input.equals("shooty")){
+			oj.addTower(e.getX()-25, e.getY()-50, input);
+		}else {
+			JOptionPane.showMessageDialog(null, "That is not a valid tower name!!! Valid names are 'freezy' or 'shooty'.");
+		}
+		
 	}
 
 	@Override

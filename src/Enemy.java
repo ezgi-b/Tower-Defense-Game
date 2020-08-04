@@ -9,7 +9,10 @@ public class Enemy extends GameObject{
 		speed = 1;
 		// TODO Auto-generated constructor stub
 	}
+	boolean chased = false;
 	int type = 0;
+	int slowDown = 0;
+	boolean frozen = false;
 	Font font = new Font("Arial", Font.BOLD,28);
 	void draw(Graphics g){
 		g.setColor(Color.WHITE);
@@ -21,17 +24,47 @@ public class Enemy extends GameObject{
 		g.fillRect(x, y-15, hp*5, 10);
 		g.setColor(Color.RED);
 		g.fillRect(x+(hp*5), y-15, 50-(hp*5), 10);
+		if(frozen==true) {
+			g.setColor(Color.blue);
+			g.fillRect(x, y, width, height);
+			g.setColor(Color.cyan);
+			g.drawLine(x, y, x+20, y+30);
+			g.drawLine(x+10, y+15, x, y+30);
+			g.drawLine(x+20, y+30, x+50, y+50);
+			g.drawLine(x+29, y+36, x+35, y+50);
+		}
 
 	}
 	
 	void update(){
 		
 		if(y<300) {
-			y+=speed;
+			if(slowDown%30==0) {
+				y+=speed;
+				slowDown=0;
+				frozen = false;
+			}else {
+				slowDown++;
+				frozen = true;
+			}
 		}else if(y>300 && x<300) {
-			x+=speed;
+			if(slowDown%30==0) {
+				x+=speed;
+				slowDown=0;
+				frozen = false;
+			}else {
+				slowDown++;
+				frozen = true;
+			}
 		}else{
-			y+=speed;
+			if(slowDown%30==0) {
+				y+=speed;
+				slowDown=0;
+				frozen = false;
+			}else {
+				slowDown++;
+				frozen = true;
+			}
 		}
 		super.update();
 	}

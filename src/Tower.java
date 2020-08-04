@@ -5,10 +5,12 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 public class Tower extends GameObject{
-	Tower(int x, int y, int width, int height, int hp){
+	Tower(int x, int y, int width, int height, int hp, String type){
 		super(x,y,width,height, hp);
 		speed = 15;
+		this.type = type;
 	}
+	String type;
 	boolean shootAnim;
 	int upgradeNumber=0;
 	void draw(Graphics g) {
@@ -44,6 +46,6 @@ public class Tower extends GameObject{
 	
 	
 	public Projectile getProjectile() {
-        return new Projectile(x+width/2, y, 10, 10, 0);
+        return new Projectile(x+width/2, y, 10, 10, 0, type);
 	} 
 }

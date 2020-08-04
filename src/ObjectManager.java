@@ -19,7 +19,7 @@ public class ObjectManager extends JFrame implements ActionListener{
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
 	Timer shoot = new Timer(4053, this);
-	Timer faster = new Timer(20000, this);
+	Timer faster = new Timer(80300, this);
 	Timer anim = new Timer(250, this);
 	Timer spawn2 = new Timer(4053, this);
 	Treasure_Chest tc = new Treasure_Chest(275, 700, 100, 100, 20);
@@ -28,10 +28,10 @@ public class ObjectManager extends JFrame implements ActionListener{
 		shoot.start();
 		faster.start();
 	}
-	void addTower(int x, int y) {
+	void addTower(int x, int y, String s) {
 		if(score>=20) {
 			boolean draw = true;
-			Tower t = new Tower(x, y, 50, 50, 0);
+			Tower t = new Tower(x, y, 50, 50, 0, s);
 			t.isActive=false;
 			for(Tower w: towers) {
 				if(t.collisionBox.intersects(w.collisionBox)) {
@@ -131,8 +131,14 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		for(Enemy a: aliens) {
 			for(Projectile p: projectiles) {
 				if(a.collisionBox.intersects(p.collisionBox)) {
-					a.hp-=(2*(p.upgrade+1));
-					p.isActive = false;
+					if(p.type.equals("shooty")) {
+						a.hp-=(2*(p.upgrade+1));
+						p.isActive = false;
+						a.speed = 1;
+					}else if(p.type.equals("freezy")) {
+						a.slowDown = 1;
+						p.isActive = false;
+					}
 				}
 			}
 		}
@@ -155,7 +161,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		
 		if(e.getSource().equals(shoot)) {
 			for(Tower t: towers) {
-				Projectile p = new Projectile(t.x+15, t.y+15, 20, 20, 0);
+				Projectile p = new Projectile(t.x+15, t.y+15, 20, 20, 0, t.type);
 				p.upgrade=t.upgradeNumber;
 				addProjectile(p);
 				t.shootAnim=true;
