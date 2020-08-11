@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	
 	public static Image image;
 	Timer frameDraw;
-	Timer alienSpawn;
+	//Timer alienSpawn;
 	GamePanel(){
 		frameDraw = new Timer(1000/70,this);
 		frameDraw.start();
@@ -104,11 +104,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 	
 	void startGame() {
-		alienSpawn = new Timer(4000, oj);
-	    alienSpawn.start();
+		oj.startAliens();
 	}
 	void stopGame() {
-	    alienSpawn.stop();
+	    oj.stopAliens();
 	}
 	
 	void loadImage(String imageFile) {
@@ -163,7 +162,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		
 		if (e.getKeyCode()==KeyEvent.VK_U) {
 			System.out.println("ooo");
-			oj.upgradeTower(Integer.parseInt(JOptionPane.showInputDialog("Which number Tower do you want to updgrade")));
+			int upgradeNum = Integer.parseInt(JOptionPane.showInputDialog("Which number Tower do you want to updgrade"));
+			oj.upgradeTower(upgradeNum);
 		}
 	}
 

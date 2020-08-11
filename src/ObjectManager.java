@@ -15,23 +15,29 @@ import javax.swing.Timer;
 
 public class ObjectManager extends JFrame implements ActionListener{
 	ArrayList<Tower> towers = new ArrayList<Tower>();
+	ArrayList<Timer> shootTimers = new ArrayList<Timer>();
+	ArrayList<Timer> animTimers = new ArrayList<Timer>();
 	int score;
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
-	Timer shoot = new Timer(4053, this);
+	//Timer shoot = new Timer(4053, this);
 	Timer faster = new Timer(80300, this);
-	Timer anim = new Timer(250, this);
-	Timer spawn2 = new Timer(4053, this);
+	//Timer anim = new Timer(250, this);
+	Timer alienSpawn;
+	
 	Treasure_Chest tc = new Treasure_Chest(275, 700, 100, 100, 20);
 	ObjectManager(){
 		score = 100;
-		shoot.start();
+		//shoot.start();
 		faster.start();
 	}
 	void addTower(int x, int y, String s) {
 		if(score>=20) {
 			boolean draw = true;
 			Tower t = new Tower(x, y, 50, 50, 0, s);
+			Timer shoot = new Timer(4053, this);
+			shoot.start();
+			Timer anim = new Timer(250, this);
 			t.isActive=false;
 			for(Tower w: towers) {
 				if(t.collisionBox.intersects(w.collisionBox)) {
@@ -40,16 +46,31 @@ public class ObjectManager extends JFrame implements ActionListener{
 			}
 			if(draw==true) {
 				towers.add(t);
+				shootTimers.add(shoot);
+				animTimers.add(anim);
 				score-=20;
 			}
 		}
 	}
 	
+	void startAliens() {
+		alienSpawn = new Timer(4000, this);
+	    alienSpawn.start();
+	}
+	void stopAliens() {
+	    alienSpawn.stop();
+	}
+	
 	void upgradeTower(int i) {
-		if(score>=40) {
-			if(towers.get(i-1).upgradeNumber<2) {
-			towers.get(i-1).upgradeNumber++;
-			score-=40;
+		int ii = i-1;
+		if(score>=(40*(towers.get(ii).upgradeNumber+1))) {
+			System.out.println(towers.get(ii).upgradeNumber);
+			if(towers.get(ii).upgradeNumber<2) {
+				score-=(40*(towers.get(ii).upgradeNumber+1));
+				towers.get(ii).upgradeNumber++;
+				shootTimers.get(ii).stop();
+				shootTimers.get(ii).setDelay((int) (4053/(towers.get(ii).upgradeNumber + 0.3)));
+				shootTimers.get(ii).start();
 			}
 		}
 	}
@@ -159,25 +180,31 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
-		if(e.getSource().equals(shoot)) {
-			for(Tower t: towers) {
-				Projectile p = new Projectile(t.x+15, t.y+15, 20, 20, 0, t.type);
-				p.upgrade=t.upgradeNumber;
+		for(int i = 0; i<towers.size(); i++) {
+			if(e.getSource().equals(shootTimers.get(i))) {
+		
+				Projectile p = new Projectile(towers.get(i).x+15, towers.get(i).y+15, 20, 20, 0, towers.get(i).type);
+				p.upgrade=towers.get(i).upgradeNumber;
 				addProjectile(p);
-				t.shootAnim=true;
-				anim.start();
+				towers.get(i).shootAnim=true;
+				animTimers.get(i).start();
+				break;
 			}
-		}else if(e.getSource().equals(anim)){
-			for(Tower t: towers) {
-				t.shootAnim=false;
+		}
+		for(int i = 0; i<towers.size(); i++) {
+			if(e.getSource().equals(animTimers.get(i))){
+				towers.get(i).shootAnim=false;
+				animTimers.get(i).stop();
+				break;
 			}
-			anim.stop();
-		}else if(e.getSource().equals(faster)){
+		}
+		
+		if(e.getSource().equals(faster)){
 			faster.stop();
-			spawn2.start();
-		}else if(e.getSource().equals(spawn2)){
-			addAlien();
-		}else {
+			alienSpawn = new Timer(2027, this);
+			alienSpawn.start();
+		}else if(e.getSource().equals(alienSpawn)){
+			
 			addAlien();
 		}
 	}
