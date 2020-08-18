@@ -27,6 +27,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		    drawGameState(g);
 		}else if(currentState == END){
 		    drawEndState(g);
+		}else if(currentState == INSTRUCTIONS){
+		    drawInstructionsState(g);
 		}
 	}
 	
@@ -41,6 +43,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	final int MENU = 0;
     final int GAME = 1;
     final int END = 2;
+    final int INSTRUCTIONS = 13;
     public int currentState = MENU;
     public static final Color NIGHT_SKY = new Color(30,10,90);
     public static final Color STAR = new Color(210,250,230);
@@ -70,7 +73,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.fillRect(0, 0, TowerDefense.WIDTH, TowerDefense.HEIGHT);
 		g.setFont(titleFont);
 		g.setColor(STAR);
-		g.drawString("TOWER DEFENSE", 27, 100);
+		g.drawString("TOWER DEFENSE", 33, 100);
 		g.setFont(enter_spaceFont);
 		g.setColor(STAR);
 		g.drawString("Press ENTER to start", 125, 350);
@@ -101,6 +104,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.setFont(enter_spaceFont);
 		g.setColor(STAR);
 		g.drawString("Press ENTER to restart", 120, 550);
+	}
+	
+	void drawInstructionsState(Graphics g) {
+		g.setColor(GAMEBACKGROUND);
+		g.fillRect(0, 0, TowerDefense.WIDTH, TowerDefense.HEIGHT);
+		g.setColor(STAR);
+		g.setFont(titleFont);
+		g.drawString("Instructions", 115, 80);
+		g.setFont(enter_spaceFont);
+		g.drawString("Your job is to defend the treasure chest from", 10, 140);
+		g.drawString("the enemies. Click a spot on the screen to", 10, 165);
+		g.drawString("spawn a tower. There are two types of towers:", 10, 190);
+		g.drawString("freezy and shooty ones. Type in the type of", 10, 215);
+		g.drawString("tower you wish to buy to buy it. If you want to", 10, 240);
+		g.drawString("upgrade a tower, press the 'u' button then", 10, 265);
+		g.drawString("specify which number tower you wish to", 10, 290);
+		g.drawString("upgrade.", 10, 315);
+		
+		g.drawString("Press the 'r' key to return to the menu.", 10, 380);
 	}
 	
 	void startGame() {
@@ -154,9 +176,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		        stopGame();
 		    }
 		}
-		if(currentState == GAME) {
+		if(currentState == MENU) {
 			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-				
+				currentState = INSTRUCTIONS;
+			}
+		}
+		
+		if(currentState == INSTRUCTIONS) {
+			if (e.getKeyCode()==KeyEvent.VK_R) {
+				currentState = MENU;
 			}
 		}
 		
@@ -165,6 +193,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			int upgradeNum = Integer.parseInt(JOptionPane.showInputDialog("Which number Tower do you want to updgrade"));
 			oj.upgradeTower(upgradeNum);
 		}
+		
 	}
 
 	@Override
