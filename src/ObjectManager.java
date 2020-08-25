@@ -1,6 +1,8 @@
+import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,7 +12,9 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JApplet;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 public class ObjectManager extends JFrame implements ActionListener{
@@ -24,6 +28,11 @@ public class ObjectManager extends JFrame implements ActionListener{
 	Timer enemyHP = new Timer(10000, this);
 	Timer faster = new Timer(80300, this);
 	Timer alienSpawn;
+	Rectangle collisionBox0 = new Rectangle(100, 0, 50, 350);
+	Rectangle collisionBox1 = new Rectangle(100, 300, 250, 50);
+	Rectangle collisionBox2 = new Rectangle(300, 300, 50, 500);
+	
+	
 	
 	Treasure_Chest tc = new Treasure_Chest(275, 700, 100, 100, 20);
 	ObjectManager(){
@@ -43,11 +52,16 @@ public class ObjectManager extends JFrame implements ActionListener{
 					draw = false;
 				}
 			}
+			if(t.collisionBox.intersects(collisionBox0)||t.collisionBox.intersects(collisionBox1)||t.collisionBox.intersects(collisionBox2)) {
+				draw = false;
+			}
 			if(draw==true) {
 				towers.add(t);
 				shootTimers.add(shoot);
 				animTimers.add(anim);
 				score-=20;
+			}else {
+				JOptionPane.showMessageDialog(null, "You cannot place a tower there!");
 			}
 		}
 	}
@@ -136,6 +150,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 			if(aliens.get(i).hp<=0) {
 				aliens.remove(i);
 				score+=4;
+				//playSound("DeathSound.wav");
 			}
 		}
 		for(int i = 0; i<projectiles.size();i++) {
@@ -149,6 +164,16 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 			}
 		}
 	}
+	
+	private void playSound(String fileName) {
+		AudioClip sound = JApplet.newAudioClip(getClass().getResource(fileName));
+		sound.play();
+		System.out.println("ll");
+	}
+	
+	
+	
+	
 	void checkCollision() {
 		for(Enemy a: aliens) {
 			for(Projectile p: projectiles) {
