@@ -1,3 +1,4 @@
+/.DS_Store
 /Enemy.class
 /GameObject.class
 /GamePanel.class
@@ -6,8 +7,9 @@
 /Tower.class
 /TowerDefense.class
 /Treasure_Chest.class
-/DeathSound.mp3
-/Power_Up_Ray-Mike_Koenig-800933783.mp3
-/Sound.mp3
-/airplane-landing_daniel_simion.mp3
-/Sound2.mp3
+/Bottle Rocket-SoundBible.com-332895117.wav
+/Sound.wav
+/neck_snap-Vladimir-719669812.wav
+/AttackedChest.wav
+/Robot_blip-Marianne_Gagnon-120342607.wav
+/EnemyDeath.wav

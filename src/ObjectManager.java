@@ -63,6 +63,8 @@ public class ObjectManager extends JFrame implements ActionListener{
 			}else {
 				JOptionPane.showMessageDialog(null, "You cannot place a tower there!");
 			}
+		}else {
+			JOptionPane.showMessageDialog(null, "You do not have enough money to buy this tower! You need $20 to buy it.");
 		}
 	}
 	
@@ -77,15 +79,21 @@ public class ObjectManager extends JFrame implements ActionListener{
 	
 	void upgradeTower(int i) {
 		int ii = i-1;
-		if(score>=(40*(towers.get(ii).upgradeNumber+1))) {
-			System.out.println(towers.get(ii).upgradeNumber);
-			if(towers.get(ii).upgradeNumber<2) {
-				score-=(40*(towers.get(ii).upgradeNumber+1));
-				towers.get(ii).upgradeNumber++;
-				shootTimers.get(ii).stop();
-				shootTimers.get(ii).setDelay((int) (4053/(towers.get(ii).upgradeNumber + 0.3)));
-				shootTimers.get(ii).start();
+		if(i<=towers.size()&&i>0) {
+			if(score>=(40*(towers.get(ii).upgradeNumber+1))) {
+				System.out.println(towers.get(ii).upgradeNumber);
+				if(towers.get(ii).upgradeNumber<2) {
+					score-=(40*(towers.get(ii).upgradeNumber+1));
+					towers.get(ii).upgradeNumber++;
+					shootTimers.get(ii).stop();
+					shootTimers.get(ii).setDelay((int) (4053/(towers.get(ii).upgradeNumber + 0.3)));
+					shootTimers.get(ii).start();
+				}
+			}else {
+				JOptionPane.showMessageDialog(null, "You do not have enough money to upgrade this tower! You must have at least $" + (40*(towers.get(ii).upgradeNumber+1)) + ".");
 			}
+		}else {
+			JOptionPane.showMessageDialog(null, "None of your towers have that number!!");
 		}
 	}
 	
@@ -150,7 +158,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 			if(aliens.get(i).hp<=0) {
 				aliens.remove(i);
 				score+=4;
-				//playSound("DeathSound.wav");
+				playSound("EnemyDeath.wav");
 			}
 		}
 		for(int i = 0; i<projectiles.size();i++) {
@@ -185,6 +193,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 					}else if(p.type.equals("freezy")) {
 						a.slowDown = 1;
 						p.isActive = false;
+						a.slowDownNum = 30*(p.upgrade + 1);
 					}
 				}
 			}
@@ -193,6 +202,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 			if(a.collisionBox.intersects(tc.collisionBox)) {
 				tc.hp--;
 				a.isActive=false;
+				playSound("AttackedChest.wav");
 			}
 		}
 	}

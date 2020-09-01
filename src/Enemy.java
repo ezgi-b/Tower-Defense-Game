@@ -12,6 +12,7 @@ public class Enemy extends GameObject{
 	boolean chased = false;
 	int type = 0;
 	int slowDown = 0;
+	int slowDownNum = 30;
 	boolean frozen = false;
 	Font font = new Font("Arial", Font.BOLD,28);
 	void draw(Graphics g){
@@ -39,7 +40,7 @@ public class Enemy extends GameObject{
 	void update(){
 		
 		if(y<300) {
-			if(slowDown%30==0) {
+			if(slowDown%slowDownNum==0) {
 				y+=speed;
 				slowDown=0;
 				frozen = false;
@@ -48,7 +49,7 @@ public class Enemy extends GameObject{
 				frozen = true;
 			}
 		}else if(y>300 && x<300) {
-			if(slowDown%30==0) {
+			if(slowDown%slowDownNum==0) {
 				x+=speed;
 				slowDown=0;
 				frozen = false;
@@ -57,7 +58,7 @@ public class Enemy extends GameObject{
 				frozen = true;
 			}
 		}else{
-			if(slowDown%30==0) {
+			if(slowDown%slowDownNum==0) {
 				y+=speed;
 				slowDown=0;
 				frozen = false;
