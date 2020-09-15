@@ -193,6 +193,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			int upgradeNum = Integer.parseInt(JOptionPane.showInputDialog("Which number Tower do you want to updgrade"));
 			oj.upgradeTower(upgradeNum);
 		}
+		if (e.getKeyCode()==KeyEvent.VK_S) {
+			System.out.println("slow down");
+			oj.slowAliens();
+		}
 		
 	}
 

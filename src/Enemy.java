@@ -21,6 +21,11 @@ public class Enemy extends GameObject{
 		g.drawString("" + hp, x+10, y-20);
 		g.setColor(Color.MAGENTA);
 		g.fillRect(x, y, width, height);
+		g.setColor(Color.white);
+		g.fillOval(x+width/4, y+width/4, width/2, height/2);
+		g.setColor(Color.black);
+		g.fillOval(x+2*width/5, y+2*width/5, width/5, height/5);
+		
 		g.setColor(Color.GREEN);
 		g.fillRect(x, y-15, hp*5, 10);
 		g.setColor(Color.RED);

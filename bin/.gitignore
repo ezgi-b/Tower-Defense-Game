@@ -1,15 +1,13 @@
 /.DS_Store
+/AttackedChest.wav
 /Enemy.class
+/EnemyDeath.wav
 /GameObject.class
 /GamePanel.class
 /ObjectManager.class
 /Projectile.class
+/Sound.wav
 /Tower.class
 /TowerDefense.class
 /Treasure_Chest.class
-/Bottle Rocket-SoundBible.com-332895117.wav
-/Sound.wav
-/neck_snap-Vladimir-719669812.wav
-/AttackedChest.wav
-/Robot_blip-Marianne_Gagnon-120342607.wav
-/EnemyDeath.wav
+/Button.class

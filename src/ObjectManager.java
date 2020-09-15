@@ -23,20 +23,20 @@ public class ObjectManager extends JFrame implements ActionListener{
 	ArrayList<Timer> animTimers = new ArrayList<Timer>();
 	int score;
 	int hpOfEnemies = 2;
+	int spawnTime = 4000;
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
-	Timer enemyHP = new Timer(10000, this);
-	Timer faster = new Timer(80300, this);
+	Timer enemyHP = new Timer(15000, this);
+	Timer faster = new Timer(15000, this);
 	Timer alienSpawn;
 	Rectangle collisionBox0 = new Rectangle(100, 0, 50, 350);
 	Rectangle collisionBox1 = new Rectangle(100, 300, 250, 50);
 	Rectangle collisionBox2 = new Rectangle(300, 300, 50, 500);
 	
 	
-	
 	Treasure_Chest tc = new Treasure_Chest(275, 700, 100, 100, 20);
 	ObjectManager(){
-		score = 50;
+		score = 20;
 		faster.start();
 	}
 	void addTower(int x, int y, String s) {
@@ -75,6 +75,14 @@ public class ObjectManager extends JFrame implements ActionListener{
 	}
 	void stopAliens() {
 	    alienSpawn.stop();
+	}
+	
+	void slowAliens() {
+		spawnTime+=towers.size()*150;
+		alienSpawn = new Timer(spawnTime, this);
+		alienSpawn.restart();
+		System.out.println(spawnTime);
+		score-=25;
 	}
 	
 	void upgradeTower(int i) {
@@ -157,7 +165,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		for(int i = 0; i<aliens.size();i++) {
 			if(aliens.get(i).hp<=0) {
 				aliens.remove(i);
-				score+=4;
+				score+=5;
 				playSound("EnemyDeath.wav");
 			}
 		}
@@ -218,12 +226,12 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		
 		for(int i = 0; i<towers.size(); i++) {
 			if(e.getSource().equals(shootTimers.get(i))) {
-		
 				Projectile p = new Projectile(towers.get(i).x+15, towers.get(i).y+15, 20, 20, 0, towers.get(i).type);
 				p.upgrade=towers.get(i).upgradeNumber;
 				addProjectile(p);
 				towers.get(i).shootAnim=true;
 				animTimers.get(i).start();
+				spawnTime-=25;
 				break;
 			}
 		}
@@ -237,25 +245,25 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		if(e.getSource().equals(enemyHP)) {
 			if(hpOfEnemies==2) {
 				hpOfEnemies=4;
-				enemyHP = new Timer(20000, this);
+				enemyHP = new Timer(30000, this);
 				enemyHP.start();
 			}else if(hpOfEnemies==4) {
 				hpOfEnemies=6;
-				enemyHP = new Timer(30000, this);
+				enemyHP = new Timer(40000, this);
 				enemyHP.start();
 			}else if(hpOfEnemies==6) {
 				hpOfEnemies=8;
-				enemyHP = new Timer(40000, this);
+				enemyHP = new Timer(50000, this);
 				enemyHP.start();
 			}else if(hpOfEnemies==8) {
 				hpOfEnemies=10;
 			}
 		}
 		if(e.getSource().equals(faster)){
-			faster.stop();
-			alienSpawn = new Timer(2027, this);
+			alienSpawn = new Timer(spawnTime, this);
 			alienSpawn.start();
 			System.out.println("faster");
+			System.out.println(spawnTime);
 		}else if(e.getSource().equals(alienSpawn)){
 			
 			addAlien();
