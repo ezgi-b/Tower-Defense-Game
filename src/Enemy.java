@@ -13,7 +13,7 @@ public class Enemy extends GameObject{
 	int type = 0;
 	int slowDown = 0;
 	int slowDownNum = 30;
-	boolean frozen = false;
+	boolean burnt = false;
 	Font font = new Font("Arial", Font.BOLD,28);
 	void draw(Graphics g){
 		g.setColor(Color.WHITE);
@@ -30,14 +30,9 @@ public class Enemy extends GameObject{
 		g.fillRect(x, y-15, hp*5, 10);
 		g.setColor(Color.RED);
 		g.fillRect(x+(hp*5), y-15, 50-(hp*5), 10);
-		if(frozen==true) {
-			g.setColor(Color.blue);
-			g.fillRect(x, y, width, height);
-			g.setColor(Color.cyan);
-			g.drawLine(x, y, x+20, y+30);
-			g.drawLine(x+10, y+15, x, y+30);
-			g.drawLine(x+20, y+30, x+50, y+50);
-			g.drawLine(x+29, y+36, x+35, y+50);
+		if(burnt==true) {
+			g.setColor(Color.orange);
+			g.fillRect(x+5, y+10, 40, 20);
 		}
 
 	}
@@ -45,32 +40,11 @@ public class Enemy extends GameObject{
 	void update(){
 		
 		if(y<300) {
-			if(slowDown%slowDownNum==0) {
-				y+=speed;
-				slowDown=0;
-				frozen = false;
-			}else {
-				slowDown++;
-				frozen = true;
-			}
+			y+=speed;
 		}else if(y>300 && x<300) {
-			if(slowDown%slowDownNum==0) {
-				x+=speed;
-				slowDown=0;
-				frozen = false;
-			}else {
-				slowDown++;
-				frozen = true;
-			}
+			x+=speed;
 		}else{
-			if(slowDown%slowDownNum==0) {
-				y+=speed;
-				slowDown=0;
-				frozen = false;
-			}else {
-				slowDown++;
-				frozen = true;
-			}
+			y+=speed;
 		}
 		super.update();
 	}

@@ -39,14 +39,13 @@ public class ObjectManager extends JFrame implements ActionListener{
 		score = 20;
 		faster.start();
 	}
-	void addTower(int x, int y, String s) {
-		if(score>=20) {
+	void addTower(int x, int y, String s, int cost) {
+		Tower t = new Tower(x, y, 50, 50, 0, s, cost);
+		if(score>=t.cost) {
 			boolean draw = true;
-			Tower t = new Tower(x, y, 50, 50, 0, s);
-			Timer shoot = new Timer(4053, this);
+			Timer shoot = new Timer(4000, this);
 			shoot.start();
 			Timer anim = new Timer(250, this);
-			t.isActive=false;
 			for(Tower w: towers) {
 				if(t.collisionBox.intersects(w.collisionBox)) {
 					draw = false;
@@ -59,12 +58,13 @@ public class ObjectManager extends JFrame implements ActionListener{
 				towers.add(t);
 				shootTimers.add(shoot);
 				animTimers.add(anim);
-				score-=20;
+				score-=t.cost;
+				System.out.println(t.cost);
 			}else {
 				JOptionPane.showMessageDialog(null, "You cannot place a tower there!");
 			}
 		}else {
-			JOptionPane.showMessageDialog(null, "You do not have enough money to buy this tower! You need $20 to buy it.");
+			JOptionPane.showMessageDialog(null, "You do not have enough money to buy this tower! You need $" + t.cost + " to buy it.");
 		}
 	}
 	
@@ -88,17 +88,20 @@ public class ObjectManager extends JFrame implements ActionListener{
 	void upgradeTower(int i) {
 		int ii = i-1;
 		if(i<=towers.size()&&i>0) {
-			if(score>=(40*(towers.get(ii).upgradeNumber+1))) {
-				System.out.println(towers.get(ii).upgradeNumber);
-				if(towers.get(ii).upgradeNumber<2) {
-					score-=(40*(towers.get(ii).upgradeNumber+1));
-					towers.get(ii).upgradeNumber++;
-					shootTimers.get(ii).stop();
-					shootTimers.get(ii).setDelay((int) (4053/(towers.get(ii).upgradeNumber + 0.3)));
-					shootTimers.get(ii).start();
-				}
+			if(towers.get(ii).type=="firey") {
+				JOptionPane.showMessageDialog(null, "You cannot upgrade the firey tower at all.");
 			}else {
-				JOptionPane.showMessageDialog(null, "You do not have enough money to upgrade this tower! You must have at least $" + (40*(towers.get(ii).upgradeNumber+1)) + ".");
+				if(score>=(40*(towers.get(ii).upgradeNumber+1))) {
+					System.out.println(towers.get(ii).upgradeNumber);
+					if(towers.get(ii).upgradeNumber<2) {
+						score-=(towers.get(ii).cost*(towers.get(ii).upgradeNumber+2));
+						towers.get(ii).upgradeNumber++;
+					}else {
+						JOptionPane.showMessageDialog(null, "You are at maximum upgrade limit.");
+					}
+				}else {
+					JOptionPane.showMessageDialog(null, "You do not have enough money to upgrade this tower! You must have at least $" + (towers.get(ii).cost*(towers.get(ii).upgradeNumber+2)) + ".");
+				}
 			}
 		}else {
 			JOptionPane.showMessageDialog(null, "None of your towers have that number!!");
@@ -195,13 +198,16 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 			for(Projectile p: projectiles) {
 				if(a.collisionBox.intersects(p.collisionBox)) {
 					if(p.type.equals("shooty")) {
-						a.hp-=(2*(p.upgrade+1));
+						if(a.burnt==true) {
+							a.hp-=(4*(p.upgrade+1));	
+						}else {
+							a.hp-=(2*(p.upgrade+1));
+						}
 						p.isActive = false;
 						a.speed = 1;
-					}else if(p.type.equals("freezy")) {
-						a.slowDown = 1;
+					}else if(p.type.equals("firey")) {
 						p.isActive = false;
-						a.slowDownNum = 30*(p.upgrade + 1);
+						a.burnt = true;
 					}
 				}
 			}

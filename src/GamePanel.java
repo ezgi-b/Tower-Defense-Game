@@ -116,7 +116,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.drawString("Your job is to defend the treasure chest from", 10, 140);
 		g.drawString("the enemies. Click a spot on the screen to", 10, 165);
 		g.drawString("spawn a tower. There are two types of towers:", 10, 190);
-		g.drawString("freezy and shooty ones. Type in the type of", 10, 215);
+		g.drawString("firey and shooty ones. Type in the type of", 10, 215);
 		g.drawString("tower you wish to buy to buy it. If you want to", 10, 240);
 		g.drawString("upgrade a tower, press the 'u' button then", 10, 265);
 		g.drawString("specify which number tower you wish to", 10, 290);
@@ -210,11 +210,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(currentState == GAME) {
-			String input = JOptionPane.showInputDialog("What type of tower do you want to buy? (freezy or shooty)");
-			if(input.equals("freezy")||input.equals("shooty")){
-				oj.addTower(e.getX()-25, e.getY()-50, input);
+			String input = JOptionPane.showInputDialog("What type of tower do you want to buy? (firey or shooty)");
+			if(input.equals("firey")||input.equals("shooty")){
+				oj.addTower(e.getX()-25, e.getY()-50, input, (input.equals("shooty"))? 20: 40);
 			}else {
-				JOptionPane.showMessageDialog(null, "That is not a valid tower name!!! Valid names are 'freezy' or 'shooty'.");
+				JOptionPane.showMessageDialog(null, "That is not a valid tower name!!! Valid names are 'firey' or 'shooty'.");
 			}
 		}
 		

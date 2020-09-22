@@ -12,7 +12,8 @@ public class Projectile extends  GameObject{
 	int upgrade;
 	int direction = 2;
 	int circle = 0;
-	int chaseNumber = 0;
+	//int chaseNumber = 0;
+	int cost;
 	String type;
 	Projectile(int x, int y, int width, int height, int hp, String s) {
 		super(x, y, width, height, hp);
@@ -27,30 +28,17 @@ public class Projectile extends  GameObject{
 		if (gotImage) {
 			g.drawImage(image, x, y, width, height, null);
 		} else {
-			if(type.equals("freezy")) {
-				g.setColor(Color.cyan);
+			if(type.equals("firey")) {
+				g.setColor(Color.orange);
 			}else {
 				g.setColor(Color.PINK);
 			}
 			g.fillOval(x, y, width, height);
-			//g.fillRect(x, y, width, height);
 		}
 	}
 	
 	void update(ArrayList<Enemy> enemies){
-		//if(direction==1) {
-			//y-=speed;
-			//super.update();
-		//}else if(direction==2) {
-			//x+=speed;
-			//super.update();
-		//}else if(direction==3) {
-			//y+=speed;
-			//super.update();
-		//}else if(direction==4) {
-			//x-=speed;
-			//super.update();
-		//}
+		
 		if(enemies.isEmpty()) {
 			if(circle%8==0) {
 				x+=4;
@@ -78,23 +66,12 @@ public class Projectile extends  GameObject{
 			
 			
 		}else{
-			
-			for(int i = 0, y = 0; i<enemies.size(); i++) {
-				if(enemies.get(i).y>y) {
-					y=enemies.get(i).y;
-					enemies.get(i).chased = true;
-					if(i>0) {
-						enemies.get(i-1).chased = false;
-						chaseNumber = i;
-					}
-				}
-			}
 			float xgo;
 			float ygo;
 			float xplus = 0;
 			float yplus = 0;
-			xgo = enemies.get(chaseNumber).x-x;
-			ygo = enemies.get(chaseNumber).y-y;
+			xgo = enemies.get((type.equals("shooty"))? 0: enemies.size()-1).x-x;
+			ygo = enemies.get((type.equals("shooty"))? 0: enemies.size()-1).y-y;
 			
 			float slope = Math.abs(ygo/xgo);
 			if(slope>1000) {
@@ -106,20 +83,6 @@ public class Projectile extends  GameObject{
 					yplus = xplus*slope;
 				}
 			}
-			
-			
-			//if(xgo<0) {
-				//x-=2;
-			//}
-			//if(xgo>0) {
-				//x+=2;
-			//}
-			//if(ygo<0) {
-				//y-=2;
-			//}
-			//if(ygo>0) {
-				//y+=2;
-			//}
 			
 			if(xgo<0) {
 				x-=xplus;
