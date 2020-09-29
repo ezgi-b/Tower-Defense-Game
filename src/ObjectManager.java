@@ -78,7 +78,8 @@ public class ObjectManager extends JFrame implements ActionListener{
 	}
 	
 	void slowAliens() {
-		spawnTime+=towers.size()*150;
+		spawnTime+=800;
+		//spawnTime+=towers.size()*150;
 		alienSpawn = new Timer(spawnTime, this);
 		alienSpawn.restart();
 		System.out.println(spawnTime);
@@ -231,14 +232,16 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		// TODO Auto-generated method stub
 		
 		for(int i = 0; i<towers.size(); i++) {
-			if(e.getSource().equals(shootTimers.get(i))) {
-				Projectile p = new Projectile(towers.get(i).x+15, towers.get(i).y+15, 20, 20, 0, towers.get(i).type);
-				p.upgrade=towers.get(i).upgradeNumber;
-				addProjectile(p);
-				towers.get(i).shootAnim=true;
-				animTimers.get(i).start();
+			if(e.getSource().equals(shootTimers.get(i))&&aliens.size()>0) {
 				spawnTime-=25;
-				break;
+				if(aliens.size()>0) {
+					Projectile p = new Projectile(towers.get(i).x+15, towers.get(i).y+15, 20, 20, 0, towers.get(i).type);
+					p.upgrade=towers.get(i).upgradeNumber;
+					addProjectile(p);
+					towers.get(i).shootAnim=true;
+					animTimers.get(i).start();
+					break;
+				}
 			}
 		}
 		for(int i = 0; i<towers.size(); i++) {
