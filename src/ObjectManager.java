@@ -82,7 +82,7 @@ public class ObjectManager extends JFrame implements ActionListener{
 		alienSpawn = new Timer(spawnTime, this);
 		alienSpawn.restart();
 		System.out.println(spawnTime);
-		score-=25;
+		score-=15;
 	}
 	
 	void upgradeTower(int i) {

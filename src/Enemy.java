@@ -31,8 +31,32 @@ public class Enemy extends GameObject{
 		g.setColor(Color.RED);
 		g.fillRect(x+(hp*5), y-15, 50-(hp*5), 10);
 		if(burnt==true) {
-			g.setColor(Color.orange);
-			g.fillRect(x+5, y+10, 40, 20);
+			
+			if((x+y)%17<8) {
+				g.setColor(Color.orange);
+				g.fillRect(x+24, y-5, 10, 10);
+			}else {
+				g.setColor(Color.orange);
+				g.fillRect(x+16, y-5, 10, 10);
+			}
+			if((x+y)%27<14) {
+				g.setColor(Color.orange);
+				g.fillRect(x+4, y+20, 40, 20);
+			}else {
+				g.setColor(Color.orange);
+				g.fillRect(x+6, y+20, 40, 20);
+			}
+			if((x+y)%20<10) {
+				g.setColor(Color.orange);
+				g.fillRect(x+13, y+5, 30, 15);
+				g.setColor(Color.red);
+				g.fillRect(x+25, y+10, 10, 15);
+			}else {
+				g.setColor(Color.orange);
+				g.fillRect(x+7, y+5, 30, 15);
+				g.setColor(Color.red);
+				g.fillRect(x+15, y+10, 10, 15);
+			}
 		}
 
 	}
