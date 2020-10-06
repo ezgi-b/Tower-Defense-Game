@@ -78,12 +78,15 @@ public class ObjectManager extends JFrame implements ActionListener{
 	}
 	
 	void slowAliens() {
-		spawnTime+=800;
-		//spawnTime+=towers.size()*150;
-		alienSpawn = new Timer(spawnTime, this);
-		alienSpawn.restart();
-		System.out.println(spawnTime);
-		score-=15;
+		if(score>=15) {
+			spawnTime+=800;
+			alienSpawn = new Timer(spawnTime, this);
+			alienSpawn.restart();
+			System.out.println(spawnTime);
+			score-=15;
+		}else {
+			JOptionPane.showMessageDialog(null, "You do not have enough money to slow down the enemies! You need $15 to do this.");
+		}
 	}
 	
 	void upgradeTower(int i) {
@@ -92,16 +95,17 @@ public class ObjectManager extends JFrame implements ActionListener{
 			if(towers.get(ii).type=="firey") {
 				JOptionPane.showMessageDialog(null, "You cannot upgrade the firey tower at all.");
 			}else {
-				if(score>=(40*(towers.get(ii).upgradeNumber+1))) {
+				if(score>=(towers.get(ii).cost+20)) {
 					System.out.println(towers.get(ii).upgradeNumber);
 					if(towers.get(ii).upgradeNumber<2) {
-						score-=(towers.get(ii).cost*(towers.get(ii).upgradeNumber+2));
+						score-=(towers.get(ii).cost+20);
 						towers.get(ii).upgradeNumber++;
+						towers.get(ii).cost+=20;
 					}else {
 						JOptionPane.showMessageDialog(null, "You are at maximum upgrade limit.");
 					}
 				}else {
-					JOptionPane.showMessageDialog(null, "You do not have enough money to upgrade this tower! You must have at least $" + (towers.get(ii).cost*(towers.get(ii).upgradeNumber+2)) + ".");
+					JOptionPane.showMessageDialog(null, "You do not have enough money to upgrade this tower! You must have at least $" + (towers.get(ii).cost+20) + ".");
 				}
 			}
 		}else {

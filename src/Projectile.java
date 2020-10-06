@@ -31,7 +31,13 @@ public class Projectile extends  GameObject{
 			if(type.equals("firey")) {
 				g.setColor(Color.orange);
 			}else {
-				g.setColor(Color.PINK);
+				if(upgrade==0) {
+					g.setColor(Color.PINK);
+				}else if(upgrade==1) {
+					g.setColor(Color.red);
+				}else if(upgrade==2) {
+					g.setColor(Color.BLACK);
+				}
 			}
 			g.fillOval(x, y, width, height);
 		}

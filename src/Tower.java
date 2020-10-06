@@ -17,16 +17,30 @@ public class Tower extends GameObject{
 	boolean shootAnim;
 	int upgradeNumber=0;
 	void draw(Graphics g) {
-		Color z = new Color(140, 140,255);
-		Color r = new Color(170,10,190);
-		Color p = new Color(100,30,150);
-			g.setColor(z);
+		Color z = new Color(140, 140, 255);
+		Color r = new Color(170, 10, 190);
+		Color p = new Color(100, 30, 150);
+		
+		Color e = new Color(255, 105, 38);
+		Color a = new Color(170, 80, 190);
+		Color w = new Color(240, 25, 83);
+			if(type.equals("shooty")) {
+				g.setColor(z);
+			}else {
+				g.setColor(e);
+			}
 			g.fillRect(x, y, width, height);
+			
 			g.setColor(r);
+			
 			for(int i = 0; i<upgradeNumber; i++) {
 				g.fillRect(x, y+((i+1)*15), 50, 10);
 			}
-			g.setColor(p);
+			if(type.equals("shooty")) {
+				g.setColor(p);
+			}else {
+				g.setColor(w);
+			}
 				
 			if(shootAnim==true) {
 				g.fillRect(x+15, y+15, 20, 20);
