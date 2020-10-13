@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -49,6 +50,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
     public static final Color STAR = new Color(210,250,230);
     public static final Color GAMEBACKGROUND = new Color(100,100,30);
     public static final Color PATH = new Color(50,50,10);
+    
     Font titleFont = new Font("Arial", Font.PLAIN,48);
     Font enter_spaceFont = new Font("Arial", Font.PLAIN,24);
     ArrayList<Tower> tower = new ArrayList<Tower>();
@@ -114,15 +116,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.drawString("Instructions", 115, 80);
 		g.setFont(enter_spaceFont);
 		g.drawString("Your job is to defend the treasure chest from", 10, 140);
-		g.drawString("the enemies. Click a spot on the screen to", 10, 165);
-		g.drawString("spawn a tower. There are two types of towers:", 10, 190);
-		g.drawString("firey and shooty ones. Type in the type of", 10, 215);
-		g.drawString("tower you wish to buy to buy it. If you want to", 10, 240);
-		g.drawString("upgrade a tower, press the 'u' button then", 10, 265);
-		g.drawString("specify which number tower you wish to", 10, 290);
-		g.drawString("upgrade.", 10, 315);
+		g.drawString("the enemies that follow a specific path. Click ", 10, 165);
+		g.drawString("a spot on the screen to spawn a tower. There", 10, 190);
+		g.drawString("are two types of towers: “shooty” and “firey”", 10, 215);
+		g.drawString("ones. A popup will appear. Type in the name", 10, 240);
+		g.drawString("of the tower (either “shooty or “firey”) you wish", 10, 265);
+		g.drawString("to buy to buy it. Shooty towers shoot", 10, 290);
+		g.drawString("projectiles at the enemies that take away 2 ", 10, 315);
+		g.drawString("health from them. Firey towers set the", 10, 340);
+		g.drawString("enemies on fire, and any projectile from a", 10, 365);
+		g.drawString("shooty tower will do double the damage. You", 10, 390);
+		g.drawString("can upgrade shooty towers by pressing the 'u'", 10, 415);
+		g.drawString(" key then specifying which number tower you", 10, 440);
+		g.drawString("wish to upgrade. Shooty towers cost $20, then", 10, 465);
+		g.drawString("each upgrade is $20 more, and you can only", 10, 490);
+		g.drawString("upgrade twice. Firey towers cost $40, and you", 10, 515);
+		g.drawString("can’t upgrade them. The more towers you,", 10, 540);
+		g.drawString("have the quicker the enemies speed up. To", 10, 565);
+		g.drawString("slow them down, press the “s” key and it", 10, 590);
+		g.drawString("takes away $15 and slows the spawn rate of", 10, 615);
+		g.drawString("the enemies. The more enemies you kill,", 10, 640);
+		g.drawString("the higher your final score will be.", 10, 665);
 		
-		g.drawString("Press the 'r' key to return to the menu.", 10, 380);
+		g.drawString("Press the 'r' key to return to the menu.", 10, 750);
 	}
 	
 	void startGame() {
