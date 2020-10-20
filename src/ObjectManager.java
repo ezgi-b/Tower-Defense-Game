@@ -22,6 +22,7 @@ public class ObjectManager extends JFrame implements ActionListener{
 	ArrayList<Timer> shootTimers = new ArrayList<Timer>();
 	ArrayList<Timer> animTimers = new ArrayList<Timer>();
 	int score;
+	int gameScore = 0;
 	int hpOfEnemies = 2;
 	int spawnTime = 4000;
 	public static final Color STAR = new Color(210,250,230);
@@ -84,6 +85,7 @@ public class ObjectManager extends JFrame implements ActionListener{
 			alienSpawn.restart();
 			System.out.println(spawnTime);
 			score-=15;
+			JOptionPane.showMessageDialog(null, "Enemies have been slowed down!");
 		}else {
 			JOptionPane.showMessageDialog(null, "You do not have enough money to slow down the enemies! You need $15 to do this.");
 		}
@@ -175,6 +177,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 				aliens.remove(i);
 				score+=5;
 				playSound("EnemyDeath.wav");
+				changeGameScore(10);
 			}
 		}
 		for(int i = 0; i<projectiles.size();i++) {
@@ -230,6 +233,14 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		return score;
 	}
 	
+	int getGameScore() {
+		return gameScore;
+	}
+	
+	void changeGameScore(int i) {
+		gameScore+=i;
+		System.out.println(gameScore);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

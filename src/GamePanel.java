@@ -11,6 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
@@ -50,6 +52,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
     public static final Color STAR = new Color(210,250,230);
     public static final Color GAMEBACKGROUND = new Color(100,100,30);
     public static final Color PATH = new Color(50,50,10);
+    ArrayList<Integer> scores = new ArrayList<Integer>();
     
     Font titleFont = new Font("Arial", Font.PLAIN,48);
     Font enter_spaceFont = new Font("Arial", Font.PLAIN,24);
@@ -68,6 +71,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	
 	void updateEndState() {
 		
+	}
+	
+	void addScoreToList(int x) {
+		scores.add(x);
+		System.out.println(scores);
 	}
 	
 	void drawMenuState(Graphics g) {  
@@ -102,10 +110,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.drawString("GAME OVER", 100, 100);
 		g.setFont(enter_spaceFont);
 		g.setColor(STAR);
-		g.drawString("You killed " + oj.getScore() + " enemies", 145, 350);
+		g.drawString("Your score is " + oj.getGameScore(), 145, 400);
 		g.setFont(enter_spaceFont);
 		g.setColor(STAR);
 		g.drawString("Press ENTER to restart", 120, 550);
+		
+		g.drawString("Scores", 210, 180);
+		
+		Collections.sort(scores, Collections.reverseOrder());
+		for(int e = 0; e < scores.size(); e++) {
+			g.drawString("" + scores.get(e), 240, 200+(20*e));
+		}
 	}
 	
 	void drawInstructionsState(Graphics g) {
@@ -127,7 +142,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.drawString("enemies on fire, and any projectile from a", 10, 365);
 		g.drawString("shooty tower will do double the damage. You", 10, 390);
 		g.drawString("can upgrade shooty towers by pressing the 'u'", 10, 415);
-		g.drawString(" key then specifying which number tower you", 10, 440);
+		g.drawString("key then specifying which number tower you", 10, 440);
 		g.drawString("wish to upgrade. Shooty towers cost $20, then", 10, 465);
 		g.drawString("each upgrade is $20 more, and you can only", 10, 490);
 		g.drawString("upgrade twice. Firey towers cost $40, and you", 10, 515);
@@ -188,6 +203,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		        currentState = GAME;
 		        startGame();
 		    } else if (currentState == GAME) {
+		    	addScoreToList(oj.gameScore);
 		        currentState = END;
 		        stopGame();
 		    }
