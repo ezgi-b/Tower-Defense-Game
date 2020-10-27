@@ -60,14 +60,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
     ObjectManager oj = new ObjectManager();
     
     
-	
+    void changeState(int s) {
+    	currentState = s;
+    }
+    
     void updateMenuState() {
    
 	}
 	
 	void updateGameState() {
 		oj.update();
+		if(oj.tc.hp<=0) {
+			 changeState(END);
+			 System.out.println("END");
+		}
 	}
+	
+	
 	
 	void updateEndState() {
 		

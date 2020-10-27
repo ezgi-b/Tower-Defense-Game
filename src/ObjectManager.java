@@ -27,15 +27,18 @@ public class ObjectManager extends JFrame implements ActionListener{
 	int spawnTime = 4000;
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
+	Font better = new Font("Arial", Font.PLAIN,20);
 	Timer enemyHP = new Timer(15000, this);
 	Timer faster = new Timer(15000, this);
 	Timer alienSpawn;
 	Rectangle collisionBox0 = new Rectangle(100, 0, 50, 350);
 	Rectangle collisionBox1 = new Rectangle(100, 300, 250, 50);
 	Rectangle collisionBox2 = new Rectangle(300, 300, 50, 500);
+	Rectangle collisionBoxTreasureChest = new Rectangle(275, 700, 100, 100);
+	Rectangle collisionBoxMoney = new Rectangle(300, 70, 200, 40);
 	
 	
-	Treasure_Chest tc = new Treasure_Chest(275, 700, 100, 100, 20);
+	Treasure_Chest tc = new Treasure_Chest(275, 700, 200, 100, 20);
 	ObjectManager(){
 		score = 20;
 		faster.start();
@@ -52,7 +55,7 @@ public class ObjectManager extends JFrame implements ActionListener{
 					draw = false;
 				}
 			}
-			if(t.collisionBox.intersects(collisionBox0)||t.collisionBox.intersects(collisionBox1)||t.collisionBox.intersects(collisionBox2)) {
+			if(t.collisionBox.intersects(collisionBox0)||t.collisionBox.intersects(collisionBox1)||t.collisionBox.intersects(collisionBox2)||t.collisionBox.intersects(collisionBoxTreasureChest)||t.collisionBox.intersects(collisionBoxMoney)) {
 				draw = false;
 			}
 			if(draw==true) {
@@ -78,16 +81,21 @@ public class ObjectManager extends JFrame implements ActionListener{
 	    alienSpawn.stop();
 	}
 	
+	
 	void slowAliens() {
-		if(score>=15) {
-			spawnTime+=800;
-			alienSpawn = new Timer(spawnTime, this);
-			alienSpawn.restart();
-			System.out.println(spawnTime);
-			score-=15;
-			JOptionPane.showMessageDialog(null, "Enemies have been slowed down!");
+		if(spawnTime<=1000) {
+			if(score>=15) {
+				spawnTime+=800;
+				alienSpawn = new Timer(spawnTime, this);
+				alienSpawn.restart();
+				System.out.println(spawnTime);
+				score-=15;
+				JOptionPane.showMessageDialog(null, "Enemies have been slowed down!");
+			}else {
+				JOptionPane.showMessageDialog(null, "You do not have enough money to slow down the enemies! You need $15 to do this.");
+			}
 		}else {
-			JOptionPane.showMessageDialog(null, "You do not have enough money to slow down the enemies! You need $15 to do this.");
+			JOptionPane.showMessageDialog(null, "You cannot slow the enemies more than this!");
 		}
 	}
 	
@@ -149,19 +157,25 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 	}
 	
 	void draw(Graphics g) {
+		for(Tower t: towers) {
+			t.draw(g);
+			
+		}
 		for(int i=0; i<towers.size(); i++) {
 			g.setColor(STAR);
 			g.setFont(font);
 			int num = i+1;
-			g.drawString(""+num, towers.get(i).x, towers.get(i).y-10);
+			g.setFont(better);
+			if(num<10) {
+				g.drawString(""+num, towers.get(i).x+20, towers.get(i).y+33);
+			}else {
+				g.drawString(""+num, towers.get(i).x+14, towers.get(i).y+33);
+			}
 		}
 		g.setColor(STAR);
 		g.setFont(font);
-		g.drawString("$" + getScore(), 200, 100);
-		for(Tower t: towers) {
-				t.draw(g);
-				
-		}
+		g.drawString("$" + getScore(), 300, 100);
+		
 		for(Enemy a : aliens) {
 			a.draw(g);
 		}
