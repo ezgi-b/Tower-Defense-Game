@@ -43,6 +43,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		frameDraw.start();
 	}
 	
+	int score = 0;
 	final int MENU = 0;
     final int GAME = 1;
     final int END = 2;
@@ -120,6 +121,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.setFont(enter_spaceFont);
 		g.setColor(STAR);
 		g.drawString("Your score is " + oj.getGameScore(), 145, 400);
+		score = oj.getGameScore();
+		g.drawString("Enemies Killed: " + oj.aliensKilled, 145, 420);
+		g.drawString("Towers: " + oj.towers.size(), 145, 440);
 		g.setFont(enter_spaceFont);
 		g.setColor(STAR);
 		g.drawString("Press ENTER to restart", 120, 550);
@@ -212,7 +216,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		        currentState = GAME;
 		        startGame();
 		    } else if (currentState == GAME) {
-		    	addScoreToList(oj.gameScore);
+		    	addScoreToList(score);
 		        currentState = END;
 		        stopGame();
 		    }
@@ -253,7 +257,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		if(currentState == GAME) {
 			String input = JOptionPane.showInputDialog("What type of tower do you want to buy? (firey or shooty)");
 			if(input.equals("firey")||input.equals("shooty")){
-				oj.addTower(e.getX()-25, e.getY()-50, input, (input.equals("shooty"))? 20: 40);
+				oj.addTower(e.getX()-25, e.getY()-50, input, (input.equals("shooty"))? 20: 80);
 			}else {
 				JOptionPane.showMessageDialog(null, "That is not a valid tower name!!! Valid names are 'firey' or 'shooty'.");
 			}

@@ -22,9 +22,11 @@ public class ObjectManager extends JFrame implements ActionListener{
 	ArrayList<Timer> shootTimers = new ArrayList<Timer>();
 	ArrayList<Timer> animTimers = new ArrayList<Timer>();
 	int score;
+	int aliensKilled = 0;
 	int gameScore = 0;
 	int hpOfEnemies = 2;
-	int spawnTime = 4000;
+	int spawnTime = 1000;
+	boolean fastest = false;
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
 	Font better = new Font("Arial", Font.PLAIN,20);
@@ -44,31 +46,36 @@ public class ObjectManager extends JFrame implements ActionListener{
 		faster.start();
 	}
 	void addTower(int x, int y, String s, int cost) {
-		Tower t = new Tower(x, y, 50, 50, 0, s, cost);
-		if(score>=t.cost) {
-			boolean draw = true;
-			Timer shoot = new Timer(4000, this);
-			shoot.start();
-			Timer anim = new Timer(250, this);
-			for(Tower w: towers) {
-				if(t.collisionBox.intersects(w.collisionBox)) {
+		if(towers.size()>=10) {
+			JOptionPane.showMessageDialog(null, "You cannot have more than 10 towers!");
+		}else {
+			Tower t = new Tower(x, y, 50, 50, 0, s, cost);
+			if(score>=t.cost) {
+				boolean draw = true;
+				Timer shoot = new Timer(4000, this);
+				shoot.start();
+				Timer anim = new Timer(250, this);
+				for(Tower w: towers) {
+					if(t.collisionBox.intersects(w.collisionBox)) {
+						draw = false;
+					}
+				}
+				if(t.collisionBox.intersects(collisionBox0)||t.collisionBox.intersects(collisionBox1)||t.collisionBox.intersects(collisionBox2)||t.collisionBox.intersects(collisionBoxTreasureChest)||t.collisionBox.intersects(collisionBoxMoney)) {
 					draw = false;
 				}
-			}
-			if(t.collisionBox.intersects(collisionBox0)||t.collisionBox.intersects(collisionBox1)||t.collisionBox.intersects(collisionBox2)||t.collisionBox.intersects(collisionBoxTreasureChest)||t.collisionBox.intersects(collisionBoxMoney)) {
-				draw = false;
-			}
-			if(draw==true) {
-				towers.add(t);
-				shootTimers.add(shoot);
-				animTimers.add(anim);
-				score-=t.cost;
-				System.out.println(t.cost);
+				if(draw==true) {
+					changeGameScore(-30);
+					towers.add(t);
+					shootTimers.add(shoot);
+					animTimers.add(anim);
+					score-=t.cost;
+					System.out.println(t.cost);
+				}else {
+					JOptionPane.showMessageDialog(null, "You cannot place a tower there!");
+				}
 			}else {
-				JOptionPane.showMessageDialog(null, "You cannot place a tower there!");
+				JOptionPane.showMessageDialog(null, "You do not have enough money to buy this tower! You need $" + t.cost + " to buy it.");
 			}
-		}else {
-			JOptionPane.showMessageDialog(null, "You do not have enough money to buy this tower! You need $" + t.cost + " to buy it.");
 		}
 	}
 	
@@ -83,20 +90,20 @@ public class ObjectManager extends JFrame implements ActionListener{
 	
 	
 	void slowAliens() {
-		if(spawnTime<=1000) {
-			if(score>=15) {
-				spawnTime+=800;
-				alienSpawn = new Timer(spawnTime, this);
-				alienSpawn.restart();
-				System.out.println(spawnTime);
-				score-=15;
-				JOptionPane.showMessageDialog(null, "Enemies have been slowed down!");
-			}else {
-				JOptionPane.showMessageDialog(null, "You do not have enough money to slow down the enemies! You need $15 to do this.");
-			}
-		}else {
-			JOptionPane.showMessageDialog(null, "You cannot slow the enemies more than this!");
-		}
+		//if(spawnTime<=1000) {
+			//if(score>=15) {
+				//spawnTime+=800;
+				//alienSpawn = new Timer(spawnTime, this);
+				//alienSpawn.restart();
+				//System.out.println(spawnTime);
+				//score-=15;
+				//JOptionPane.showMessageDialog(null, "Enemies have been slowed down!");
+			//}else {
+				//JOptionPane.showMessageDialog(null, "You do not have enough money to slow down the enemies! You need $15 to do this.");
+			//}
+		//}else {
+			//JOptionPane.showMessageDialog(null, "You cannot slow the enemies more than this!");
+		//}
 	}
 	
 	void upgradeTower(int i) {
@@ -189,9 +196,14 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		for(int i = 0; i<aliens.size();i++) {
 			if(aliens.get(i).hp<=0) {
 				aliens.remove(i);
-				score+=5;
+				if(fastest==true) {
+					score+=1;
+				}else {
+					score+=5;
+				}
 				playSound("EnemyDeath.wav");
 				changeGameScore(10);
+				aliensKilled++;
 			}
 		}
 		for(int i = 0; i<projectiles.size();i++) {
@@ -262,7 +274,7 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		
 		for(int i = 0; i<towers.size(); i++) {
 			if(e.getSource().equals(shootTimers.get(i))&&aliens.size()>0) {
-				spawnTime-=25;
+				spawnTime-=22;
 				if(aliens.size()>0) {
 					Projectile p = new Projectile(towers.get(i).x+15, towers.get(i).y+15, 20, 20, 0, towers.get(i).type);
 					p.upgrade=towers.get(i).upgradeNumber;
@@ -298,7 +310,14 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 			}
 		}
 		if(e.getSource().equals(faster)){
-			alienSpawn = new Timer(spawnTime, this);
+			if(spawnTime>1100) {
+				alienSpawn = new Timer(spawnTime, this);
+			}else if(alienSpawn.getDelay()==1100){
+				fastest = true;
+			}else {
+				alienSpawn = new Timer(1100, this);
+				fastest = true;
+			}
 			alienSpawn.start();
 			System.out.println("faster");
 			System.out.println(spawnTime);
