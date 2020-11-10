@@ -32,6 +32,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		    drawEndState(g);
 		}else if(currentState == INSTRUCTIONS){
 		    drawInstructionsState(g);
+		}else if(currentState == INSTRUCTIONSONE){
+		    drawInstructionsStateOne(g);
+		}else if(currentState == INSTRUCTIONSTWO){
+		    drawInstructionsStateTwo(g);
+		}else if(currentState == INSTRUCTIONSTHREE){
+		    drawInstructionsStateThree(g);
+		}else if(currentState == INSTRUCTIONSFOUR){
+		    drawInstructionsStateFour(g);
 		}
 	}
 	
@@ -48,6 +56,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
     final int GAME = 1;
     final int END = 2;
     final int INSTRUCTIONS = 13;
+    final int INSTRUCTIONSONE = 20;
+    final int INSTRUCTIONSTWO = 21;
+    final int INSTRUCTIONSTHREE = 22;
+    final int INSTRUCTIONSFOUR = 23;
     public int currentState = MENU;
     public static final Color NIGHT_SKY = new Color(30,10,90);
     public static final Color STAR = new Color(210,250,230);
@@ -169,6 +181,69 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.drawString("Press the 'r' key to return to the menu.", 10, 750);
 	}
 	
+	void drawInstructionsStateOne(Graphics g) {
+		g.setColor(GAMEBACKGROUND);
+		g.fillRect(0, 0, TowerDefense.WIDTH, TowerDefense.HEIGHT);
+		g.setFont(titleFont);
+		g.setColor(STAR);
+		g.drawString("Game Objective", 90, 80);
+		g.setFont(enter_spaceFont);
+		g.drawString("Your job is to defend the treasure chest from", 10, 140);
+		g.drawString("the enemies that follow a specific path.", 10, 165);
+		
+		g.drawString("Press the 'n' key to see more instructions.", 10, 750);
+	}
+	void drawInstructionsStateTwo(Graphics g) {
+		g.setColor(GAMEBACKGROUND);
+		g.fillRect(0, 0, TowerDefense.WIDTH, TowerDefense.HEIGHT);
+		g.setFont(titleFont);
+		g.setColor(STAR);
+		g.drawString("Towers", 150, 80);
+		g.setFont(enter_spaceFont);
+		g.drawString("Shooty (Cost $20, 2 Upgrades: $40, $80)", 10, 140);
+		g.drawString("Damage to enemies: 2, 4, 8", 10, 165);
+		g.drawString("Shooty (Cost $60, No Upgrades)", 10, 190);
+		g.drawString("Sets enemies on fire. 2x damge by shooty", 10, 215);
+		g.drawString("tower", 10, 240);
+		
+		g.drawString("Press the 'n' key to see more instructions.", 10, 750);
+	}
+	void drawInstructionsStateThree(Graphics g) {
+		g.setColor(GAMEBACKGROUND);
+		g.fillRect(0, 0, TowerDefense.WIDTH, TowerDefense.HEIGHT);
+		g.setFont(titleFont);
+		g.setColor(STAR);
+		g.drawString("Buying and Upgrading", 10, 80);
+		g.setFont(enter_spaceFont);
+		g.drawString("Buy towers by:", 10, 140);
+		g.drawString("Clicking on screen where you want tower", 10, 165);
+		g.drawString("Answering the prompt with 'firey' or 'shooty'", 10, 190);
+		g.drawString("Can't spawn tower on road or chest, or near $", 10, 215);
+		g.drawString("Maximun of 10 towers", 10, 240);
+		g.drawString("Upgrade towers by:", 10, 265);
+		g.drawString("Pressing the 'u' key", 10, 290);
+		g.drawString("Answering the prompt with tower number", 10, 315);
+		
+		g.drawString("Press the 'n' key to see more instructions.", 10, 750);
+	}
+	void drawInstructionsStateFour(Graphics g) {
+		g.setColor(GAMEBACKGROUND);
+		g.fillRect(0, 0, TowerDefense.WIDTH, TowerDefense.HEIGHT);
+		g.setFont(titleFont);
+		g.setColor(STAR);
+		g.drawString("Key Info", 150, 80);
+		g.setFont(enter_spaceFont);
+		g.drawString("Enemies increase in frequency", 10, 140);
+		g.drawString("More towers = faster increase", 10, 165);
+		g.drawString("Final Score = (# of enemies killed * 10) - ", 10, 190);
+		g.drawString("(30 * # of towers)", 10, 215);
+		g.drawString("So, less towers = higher score", 10, 240);
+		g.drawString("The treasure chest has 20 health", 10, 265);
+		g.drawString("The game is over when it gets to zero", 10, 290);
+		
+		g.drawString("Press the 'r' key to return to the menu.", 10, 750);
+	}
+	
 	void startGame() {
 		oj.startAliens();
 	}
@@ -223,11 +298,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		}
 		if(currentState == MENU) {
 			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-				currentState = INSTRUCTIONS;
+				currentState = INSTRUCTIONSONE;
 			}
 		}
 		
-		if(currentState == INSTRUCTIONS) {
+		if(currentState == INSTRUCTIONSONE) {
+			if (e.getKeyCode()==KeyEvent.VK_N) {
+				currentState = INSTRUCTIONSTWO;
+			}
+		}else if(currentState == INSTRUCTIONSTWO) {
+			if (e.getKeyCode()==KeyEvent.VK_N) {
+				currentState = INSTRUCTIONSTHREE;
+			}
+		}else if(currentState == INSTRUCTIONSTHREE) {
+			if (e.getKeyCode()==KeyEvent.VK_N) {
+				currentState = INSTRUCTIONSFOUR;
+			}
+		}
+		
+		if(currentState == INSTRUCTIONSFOUR) {
 			if (e.getKeyCode()==KeyEvent.VK_R) {
 				currentState = MENU;
 			}
@@ -257,7 +346,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		if(currentState == GAME) {
 			String input = JOptionPane.showInputDialog("What type of tower do you want to buy? (firey or shooty)");
 			if(input.equals("firey")||input.equals("shooty")){
-				oj.addTower(e.getX()-25, e.getY()-50, input, (input.equals("shooty"))? 20: 80);
+				oj.addTower(e.getX()-25, e.getY()-50, input, (input.equals("shooty"))? 20: 60);
 			}else {
 				JOptionPane.showMessageDialog(null, "That is not a valid tower name!!! Valid names are 'firey' or 'shooty'.");
 			}

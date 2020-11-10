@@ -25,7 +25,7 @@ public class ObjectManager extends JFrame implements ActionListener{
 	int aliensKilled = 0;
 	int gameScore = 0;
 	int hpOfEnemies = 2;
-	int spawnTime = 1000;
+	int spawnTime = 4000;
 	boolean fastest = false;
 	public static final Color STAR = new Color(210,250,230);
 	Font font = new Font("Arial", Font.PLAIN,48);
@@ -312,9 +312,10 @@ ArrayList<Enemy> aliens = new ArrayList<Enemy>();
 		if(e.getSource().equals(faster)){
 			if(spawnTime>1100) {
 				alienSpawn = new Timer(spawnTime, this);
-			}else if(alienSpawn.getDelay()==1100){
+			}else if(spawnTime==1100){
 				fastest = true;
 			}else {
+				spawnTime = 1100;
 				alienSpawn = new Timer(1100, this);
 				fastest = true;
 			}
